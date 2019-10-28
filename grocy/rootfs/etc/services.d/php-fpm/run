@@ -1,0 +1,46 @@
+#!/usr/bin/with-contenv bashio
+# ==============================================================================
+# Community Hass.io Add-ons: Grocy
+# Runs the PHP-FPM daemon
+# ==============================================================================
+export GROCY_CULTURE
+export GROCY_CURRENCY
+
+bashio::log.info "Starting PHP-FPM..."
+
+if bashio::config.false 'features.batteries'; then
+    export GROCY_FEATURE_FLAG_BATTERIES=0
+fi
+
+if bashio::config.false 'features.calendar'; then
+    export GROCY_FEATURE_FLAG_CALENDAR=0
+fi
+
+if bashio::config.false 'features.chores'; then
+    export GROCY_FEATURE_FLAG_CHORES=0
+fi
+
+if bashio::config.false 'features.equipment'; then
+    export GROCY_FEATURE_FLAG_EQUIPMENT=0
+fi
+
+if bashio::config.false 'features.recipes'; then
+    export GROCY_FEATURE_FLAG_RECIPES=0
+fi
+
+if bashio::config.false 'features.shoppinglist'; then
+    export GROCY_FEATURE_FLAG_SHOPPINGLIST=0
+fi
+
+if bashio::config.false 'features.stock'; then
+    export GROCY_FEATURE_FLAG_STOCK=0
+fi
+
+if bashio::config.false 'features.tasks'; then
+    export GROCY_FEATURE_FLAG_TASKS=0
+fi
+
+GROCY_CULTURE=$(bashio::config "culture")
+GROCY_CURRENCY=$(bashio::config "currency")
+
+exec php-fpm7 --nodaemonize
